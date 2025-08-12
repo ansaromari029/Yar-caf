@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ps">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>یار کافه | Yar Cafe</title>
+<style>
+  :root{
+    --accent-1:#ff9800;
+    --accent-2:#d97706;
+    --bg:#fffaf5;
+    --card:#ffffff;
+    --muted:#6b6b6b;
+    --glass: rgba(255,255,255,0.6);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background: linear-gradient(180deg, #fffaf5 0%, #fff3e0 100%);
+    color:#222;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    direction:rtl;
+  }
+
+  header{
+    background: linear-gradient(90deg,var(--accent-1),var(--accent-2));
+    color:white;
+    padding:28px 18px;
+    text-align:center;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  }
+  header .title{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    align-items:center;
+    justify-content:center;
+  }
+  header h1{margin:0;font-size:2.1rem;letter-spacing:0.6px}
+  header p{margin:0;font-size:0.95rem;opacity:0.95}
+
+  .top-row{
+    max-width:1100px;
+    margin:18px auto;
+    display:flex;
+    gap:12px;
+    padding:0 12px;
+    align-items:center;
+    justify-content:space-between;
+  }
+
+  .lang {
+    display:flex;
+    gap:8px;
+  }
+  .lang button{
+    border: none;
+    padding:8px 12px;
+    border-radius:20px;
+    background:var(--glass);
+    cursor:pointer;
+    font-weight:700;
+    transition:0.18s;
+  }
+  .lang button.active{ background:white; color:var(--accent-2); transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,0.08); }
+
+  main{
+</a>
+    max-width:1100px;
+    margin: 8px auto 36px;
+    padding: 0 12px;
+  }
+
+  .hero{
+    display:grid;
+    grid-template-columns: 1fr 320px;
+    gap:18px;
+    align-items:start;
+  }
+  .card{
+    background:var(--card);
+    border-radius:14px;
+    padding:16px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.06);
+  }
+
+  .intro h2{ margin:0 0 8px; color:var(--accent-2) }
+  .intro p{ margin:0; color:var(--muted) }
+
+  /* Menu list */
+  .menu-list{ margin-top:16px; display:grid; gap:12px; }
+  .menu-item{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    padding:12px;
+    border-radius:10px;
+    background:linear-gradient(180deg, #fff, #fff8f0);
+    cursor:pointer;
+    transition:0.18s;
+    border:1px solid rgba(217,137,38,0.06);
+  }
+  .menu-item:hover{ transform:translateY(-4px); box-shadow:0 20px 40px rgba(0,0,0,0.06) }
+
+  .menu-item .left{
+    width:64px; height:64px; border-radius:12px;
+    background:linear-gradient(135deg,var(--accent-1),var(--accent-2));
+    display:flex; align-items:center; justify-content:center;
+    color:white; font-size:1.6rem; flex-shrink:0;
+  }
+  .menu-item .main{
+    flex:1;
+  }
+  .menu-item .main .name{ font-weight:800; font-size:1.02rem; margin-bottom:6px }
+  .menu-item .main .desc{ color:var(--muted); font-size:0.9rem }
+
+  .price-chip{
+    min-width:110px; text-align:center; padding:6px 8px; border-radius:999px;
+    background:rgba(255,152,0,0.12); color:var(--accent-2); font-weight:800;
+  }
+
+  /* details (accordion) */
+  .details{
+    margin-top:8px;
+    padding:12px;
+    background: linear-gradient(180deg,#fffaf6,#fff3e6);
+    border-radius:10px;
+    border-left:4px solid var(--accent-1);
+    display:none;
+    animation:slideFade .28s ease both;
+  }
+  @keyframes slideFade{ from{opacity:0; transform:translateY(-6px)} to{opacity:1; transform:translateY(0)} }
+
+  .sizes{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px }
+  .size{ padding:8px 10px; border-radius:10px; background:white; border:1px solid rgba(0,0,0,0.04); font-weight:700 }
+
+  /* sidebar */
+  .sidebar .card{ padding:16px; position:sticky; top:18px }
+  .qr-wrap{text-align:center}
+  .qr-wrap img{ width:150px; border-radius:12px; border:6px solid white; box-shadow:0 10px 30px rgba(0,0,0,0.09) }
+
+  .contact{ margin-top:12px; text-align:center; color:var(--muted) }
+  .contact a{ color:var(--accent-2); font-weight:800; text-decoration:none }
+
+  footer{
+    margin-top:28px;
+    background: linear-gradient(90deg,var(--accent-1),var(--accent-2));
+    color:white;
+    padding:18px;
+    text-align:center;
+  }
+
+  /* responsive */
+  @media (max-width:960px){
+    .hero{ grid-template-columns: 1fr; }
+    .top-row{ flex-direction:column; gap:10px; align-items:center }
+    body{ direction:rtl }
+  }
+  @media (max-width:520px){
+    header h1{ font-size:1.6rem }
+    .menu-item .left{ width:52px;height:52px;font-size:1.3rem }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="title">
+    <h1 id="siteTitle">🍽 یار کافه | Yar Cafe</h1>
+    <p id="siteSubtitle">خوندور خواړه او خوږ څښاکونه — Delicious food & drinks</p>
+  </div>
+</header>
+
+<div class="top-row">
+  <div style="max-width:1100px; width:100%; display:flex; justify-content:space-between; align-items:center; padding:0 12px;">
+    <div style="text-align:right">
+      <div style="font-weight:800; color:var(--accent-2)">پته:</div>
+      <div id="addressText">کارته چهار، کابل — Karte Chahar, Kabul</div>
+    </div>
+
+    <div class="lang" role="navigation" aria-label="Language">
+      <button class="lang-btn active" data-lang="ps">پښتو</button>
+      <button class="lang-btn" data-lang="fa">دری</button>
+      <button class="lang-btn" data-lang="en">English</button>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="hero">
+    <div class="card intro">
+      <h2 data-ps="📜 منو" data-fa="📜 منو" data-en="📜 Menu">📜 منو</h2>
+      <p data-ps="زموږ تازه او خوندور توکي دلته وګورئ" data-fa="غذاها و نوشیدنی‌های تازه ما را مشاهده کنید" data-en="Check our fresh & tasty items">زموږ تازه او خوندور توکي دلته وګورئ</p>
+
+      <div class="menu-list" id="menuList">
+
+        <!-- Ice Cream -->
+        <div class="menu-item" onclick="toggle('icecream')">
+          <div class="left">🍨</div>
+          <div class="main">
+            <div class="name" data-ps="ایسکریم" data-fa="بستنی" data-en="Ice Cream">ایسکریم</div>
+            <div class="desc" data-ps="خوندور او تازه" data-fa="خوشمزه و تازه" data-en="Delicious & fresh">خوندور او تازه</div>
+          </div>
+          <div class="price-chip" data-ps="له ۵۰ افغانی" data-fa="از 50 افغانی" data-en="From 50 AFN">له ۵۰ افغانی</div>
+        </div>
+        <div id="icecream" class="details">
+          <div class="sizes">
+            <div class="size" data-ps="کوچنی — 50 افغانی" data-fa="کوچک — 50 افغانی" data-en="Small — 50 AFN">کوچنی — 50 افغانی</div>
+            <div class="size" data-ps="متوسط — 80 افغانی" data-fa="متوسط — 80 افغانی" data-en="Medium — 80 AFN">متوسط — 80 افغانی</div>
+            <div class="size" data-ps="لوی — 120 افغانی" data-fa="بزرگ — 120 افغانی" data-en="Large — 120 AFN">لوی — 120 افغانی</div>
+          </div>
+          <p style="margin-top:8px" data-ps="ټوټې، چاکلیټ او میوې انتخاب کړئ" data-fa="با تکه‌ها، شکلات یا میوه سرو کنید" data-en="Choose toppings: nuts, chocolate, fruit">ټوټې، چاکلیټ او میوې انتخاب کړئ</p>
+        </div>
+
+        <!-- Chips -->
+        <div class="menu-item" onclick="toggle('chips')">
+          <div class="left">🍟</div>
+          <div class="main">
+            <div class="name" data-ps="چيپس" data-fa="چیپس" data-en="Chips">چيپس</div>
+            <div class="desc" data-ps="کرسپي او تود" data-fa="ترد و داغ" data-en="Crispy & hot">کرسپي او تود</div>
+          </div>
+          <div class="price-chip" data-ps="له ۴۰ افغانی" data-fa="از 40 افغانی" data-en="From 40 AFN">له ۴۰ افغانی</div>
+        </div>
+        <div id="chips" class="details">
+          <div class="sizes">
+            <div class="size" data-ps="کوچنی — 40 افغانی" data-fa="کوچک — 40 افغانی" data-en="Small — 40 AFN">کوچنی — 40 افغانی</div>
+            <div class="size" data-ps="متوسط — 80 افغانی" data-fa="متوسط — 80 افغانی" data-en="Medium — 80 AFN">متوسط — 80 AFN</div>
+            <div class="size" data-ps="لوی — 120 افغانی" data-fa="بزرگ — 120 افغانی" data-en="Large — 120 AFN">لوی — 120 AFN</div>
+          </div>
+          <p style="margin-top:8px" data-ps="د ځانګړې ساس سره" data-fa="با سس مخصوص" data-en="Served with special sauce">د ځانګړې ساس سره</p>
+        </div>
+
+        <!-- Cheese Burger -->
+        <div class="menu-item" onclick="toggle('cheeseburger')">
+          <div class="left">🧀🍔</div>
+          <div class="main">
+            <div class="name" data-ps="چييز برګر" data-fa="چیز برگر" data-en="Cheese Burger">چييز برګر</div>
+            <div class="desc" data-ps="تازه غوښه او پنیېر" data-fa="گوشت تازه و پنیر" data-en="Fresh patty & cheese">تازه غوښه او پنیېر</div>
+          </div>
+          <div class="price-chip" data-ps="له ۱۰۰ افغانی" data-fa="از 100 افغانی" data-en="From 100 AFN">له ۱۰۰ افغانی</div>
+        </div>
+        <div id="cheeseburger" class="details">
+          <div class="sizes">
+            <div class="size" data-ps="کوچنی — 100 AFN" data-fa="کوچک — 100 AFN" data-en="Small — 100 AFN">کوچنی — 100 AFN</div>
+            <div class="size" data-ps="متوسط — 130 AFN" data-fa="متوسط — 130 AFN" data-en="Medium — 130 AFN">متوسط — 130 AFN</div>
+            <div class="size" data-ps="لوی — 160 AFN" data-fa="بزرگ — 160 AFN" data-en="Large — 160 AFN">لوی — 160 AFN</div>
+          </div>
+          <p style="margin-top:8px" data-ps="د کاهو، رومي، او ځانګړې ساس سره" data-fa="با کاهو، گوجه و سس مخصوص" data-en="With lettuce, tomato & special sauce">د کاهو، رومي، او ځانګړې ساس سره</p>
+        </div>
+
+        <!-- Burger -->
+        <div class="menu-item" onclick="toggle('burger')">
+          <div class="left">🍔</div>
+          <div class="main">
+            <div class="name" data-ps="برګر" data-fa="برگر" data-en="Burger">برګر</div>
+            <div class="desc" data-ps="کلاسيک ذایق" data-fa="طعم کلاسیک" data-en="Classic taste">کلاسيک ذایق</div>
+          </div>
+          <div class="price-chip" data-ps="له ۸۰ افغانی" data-fa="از 80 افغانی" data-en="From 80 AFN">له ۸۰ افغانی</div>
+        </div>
+        <div id="burger" class="details">
+          <div class="sizes">
+            <div class="size" data-ps="کوچنی — 80 AFN" data-fa="کوچک — 80 AFN" data-en="Small — 80 AFN">کوچنی — 80 AFN</div>
+            <div class="size" data-ps="متوسط — 110 AFN" data-fa="متوسط — 110 AFN" data-en="Medium — 110 AFN">متوسط — 110 AFN</div>
+            <div class="size" data-ps="لوی — 140 AFN" data-fa="بزرگ — 140 AFN" data-en="Large — 140 AFN">لوی — 140 AFN</div>
+          </div>
+          <p style="margin-top:8px" data-ps="ساده او تکړه" data-fa="ساده و خوشمزه" data-en="Simple & tasty">ساده او تکړه</p>
+        </div>
+
+        <!-- Juice -->
+        <div class="menu-item" onclick="toggle('juice')">
+          <div class="left">🧃</div>
+          <div class="main">
+            <div class="name" data-ps="جوس (مختلف میوې)" data-fa="آب‌میوه (میوه‌های مختلف)" data-en="Juice (various fruits)">جوس (مختلف میوې)</div>
+            <div class="desc" data-ps="تازه تیار شوي جوسونه" data-fa="آبمیوه‌های تازه" data-en="Freshly made juices">تازه تیار شوي جوسونه</div>
+          </div>
+          <div class="price-chip" data-ps="له ۵۰ افغانی" data-fa="از 50 افغانی" data-en="From 50 AFN">له ۵۰ افغانی</div>
+        </div>
+        <div id="juice" class="details">
+          <div class="sizes">
+            <div class="size" data-ps="کوچنی — 50 AFN" data-fa="کوچک — 50 AFN" data-en="Small — 50 AFN">کوچنی — 50 AFN</div>
+            <div class="size" data-ps="متوسط — 70 AFN" data-fa="متوسط — 70 AFN" data-en="Medium — 70 AFN">متوسط — 70 AFN</div>
+            <div class="size" data-ps="لوی — 100 AFN" data-fa="بزرگ — 100 AFN" data-en="Large — 100 AFN">لوی — 100 AFN</div>
+          </div>
+          <p style="margin-top:8px" data-ps="مڼه، کیله، مالټه او نور" data-fa="سیب، موز، پرتقال و غیره" data-en="Apple, banana, orange & more">مڼه، کیله، مالټه او نور</p>
+        </div>
+
+        <!-- Shawarma -->
+        <div class="menu-item" onclick="toggle('shawarma')">
+          <div class="left">🌯</div>
+          <div class="main">
+            <div class="name" data-ps="شورمه" data-fa="شاورما" data-en="Shawarma">شورمه</div>
+            <div class="desc" data-ps="خوندور او تازه" data-fa="خوشمزه و تازه" data-en="Tasty & fresh">خوندور او تازه</div>
+          </div>
+          <div class="price-chip" data-ps="له ۷۰ افغانی" data-fa="از 70 افغانی" data-en="From 70 AFN">له ۷۰ افغانی</div>
+        </div>
+        <div id="shawarma" class="details">
+          <div class="sizes">
+            <div class="size" data-ps="کوچنی — 70 AFN" data-fa="کوچک — 70 AFN" data-en="Small — 70 AFN">کوچنی — 70 AFN</div>
+            <div class="size" data-ps="متوسط — 90 AFN" data-fa="متوسط — 90 AFN" data-en="Medium — 90 AFN">متوسط — 90 AFN</div>
+            <div class="size" data-ps="لوی — 120 AFN" data-fa="بزرگ — 120 AFN" data-en="Large — 120 AFN">لوی — 120 AFN</div>
+          </div>
+          <p style="margin-top:8px" data-ps="د چکن یا غوښې انتخاب" data-fa="قابل انتخاب چیکن یا گوشت" data-en="Choose chicken or beef">د چکن یا غوښې انتخاب</p>
+        </div>
+
+        <!-- Green Tea -->
+        <div class="menu-item" onclick="toggle('greentea')">
+          <div class="left">🍵</div>
+          <div class="main">
+            <div class="name" data-ps="شین چای" data-fa="چای سبز" data-en="Green Tea">شین چای</div>
+            <div class="desc" data-ps="هداره او تازه" data-fa="ملایم و تازه" data-en="Mild & fresh">هداره او تازه</div>
+          </div>
+          <div class="price-chip" data-ps="له ۲۰ افغانی" data-fa="از 20 افغانی" data-en="From 20 AFN">له ۲۰ افغانی</div>
+        </div>
+        <div id="greentea" class="details">
+          <div class="sizes">
+            <div class="size" data-ps="کوچنی — 20 AFN" data-fa="کوچک — 20 AFN" data-en="Small — 20 AFN">کوچنی — 20 AFN</div>
+            <div class="size" data-ps="متوسط — 30 AFN" data-fa="متوسط — 30 AFN" data-en="Medium — 30 AFN">متوسط — 30 AFN</div>
+            <div class="size" data-ps="لوی — 50 AFN" data-fa="بزرگ — 50 AFN" data-en="Large — 50 AFN">لوی — 50 AFN</div>
+          </div>
+          <p style="margin-top:8px" data-ps="د طبیعي بوټو سره" data-fa="با گیاهان طبیعی" data-en="With natural herbs">د طبیعي بوټو سره</p>
+        </div>
+
+        <!-- Milk Tea -->
+        <div class="menu-item" onclick="toggle('milktea')">
+          <div class="left">🥛☕</div>
+          <div class="main">
+            <div class="name" data-ps="شیر چای" data-fa="چای شیری" data-en="Milk Tea">شیر چای</div>
+            <div class="desc" data-ps="غني او خوشمزه" data-fa="پرملات و خوشمزه" data-en="Rich & tasty">غني او خوشمزه</div>
+          </div>
+          <div class="price-chip" data-ps="له ۳۰ افغانی" data-fa="از 30 افغانی" data-en="From 30 AFN">له ۳۰ افغانی</div>
+        </div>
+        <div id="milktea" class="details">
+          <div class="sizes">
+            <div class="size" data-ps="کوچنی — 30 AFN" data-fa="کوچک — 30 AFN" data-en="Small — 30 AFN">کوچنی — 30 AFN</div>
+            <div class="size" data-ps="متوسط — 40 AFN" data-fa="متوسط — 40 AFN" data-en="Medium — 40 AFN">متوسط — 40 AFN</div>
+            <div class="size" data-ps="لوی — 60 AFN" data-fa="بزرگ — 60 AFN" data-en="Large — 60 AFN">لوی — 60 AFN</div>
+          </div>
+          <p style="margin-top:8px" data-ps="له تازه شیدو سره" data-fa="با شیر تازه" data-en="Made with fresh milk">له تازه شیدو سره</p>
+        </div>
+
+        <!-- Coffee -->
+        <div class="menu-item" onclick="toggle('coffee')">
+          <div class="left">☕</div>
+          <div class="main">
+            <div class="name" data-ps="قهوه" data-fa="قهوه" data-en="Coffee">قهوه</div>
+            <div class="desc" data-ps="تازه پخې شوې" data-fa="تازه دم شده" data-en="Freshly brewed">تازه پخې شوې</div>
+          </div>
+          <div class="price-chip" data-ps="له ۴۰ افغانی" data-fa="از 40 افغانی" data-en="From 40 AFN">له ۴۰ افغانی</div>
+        </div>
+        <div id="coffee" class="details">
+          <div class="sizes">
+            <div class="size" data-ps="کوچنی — 40 AFN" data-fa="کوچک — 40 AFN" data-en="Small — 40 AFN">کوچنی — 40 AFN</div>
+            <div class="size" data-ps="متوسط — 60 AFN" data-fa="متوسط — 60 AFN" data-en="Medium — 60 AFN">متوسط — 60 AFN</div>
+            <div class="size" data-ps="لوی — 90 AFN" data-fa="بزرگ — 90 AFN" data-en="Large — 90 AFN">لوی — 90 AFN</div>
+          </div>
+          <p style="margin-top:8px" data-ps="ایران/ایتالیایي ذایقونه" data-fa="طعم ایرانی/ایتالیایی" data-en="Espresso / latte options">ایران/ایتالیایي ذایقونه</p>
+        </div>
+
+      </div> <!-- menu-list -->
+    </div>
+
+    <aside class="sidebar">
+      <div class="card">
+        <h3 data-ps="موږ سره اړیکه" data-fa="تماس با ما" data-en="Contact Us">موږ سره اړیکه</h3>
+        <p style="margin:6px 0; font-weight:800">📞 <a href="tel:0704116511" id="phoneLink">0704116511</a></p>
+        <p style="margin:6px 0">📍 <span id="addressSmall">کارته چهار، کابل</span></p>
+
+        <div class="qr-wrap" style="margin-top:14px">
+          <!-- QR that tries to open Chrome with your site. Change QR_CHROME_URL in script below if needed. -->
+          <img id="qrImg" src="" alt="QR Code (open in Chrome)" />
+          <div style="font-size:0.85rem; color:var(--muted); margin-top:8px" data-ps="QR د ویب پاڼې لپاره (Chrome)" data-fa="QR برای وبسایت (Chrome)" data-en="QR for website (Chrome)">QR د ویب پاڼې لپاره (Chrome)</div>
+
+          <p class="contact" style="margin-top:12px">
+            <a id="fbLink" href="https://www.facebook.com/" target="_blank">Facebook</a>
+          </p>
+        </div>
+      </div>
+    </aside>
+  </div> <!-- hero -->
+</main>
+
+<footer>
+  <div id="footerText" data-ps="© 2025 یار کافه - ټول حقوق خوندي دي" data-fa="© 2025 یار کافه - تمامی حقوق محفوظ است" data-en="© 2025 Yar Cafe - All rights reserved">© 2025 یار کافه - ټول حقوق خوندي دي</div>
+</footer>
+
+<script>
+/* -------------------------
+   Settings: change this to your real site if available
+   If you want QR to open generic link (any browser), use just URL (no googlechrome://...)
+   ------------------------- */
+const SITE_URL = "https://yarcafe.com"; // <- change to your real site (or keep as placeholder)
+const QR_CHROME_URL = encodeURIComponent("googlechrome://navigate?url=" + SITE_URL); // opens in Chrome if installed
+const QR_GENERIC = encodeURIComponent(SITE_URL);
+
+/* Use api.qrserver.com to generate QR image on the fly.
+   First tries Chrome-scheme; fallback comment below if you want plain URL */
+document.getElementById('qrImg').src = "https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=" + QR_CHROME_URL;
+
+/* -------------------------
+   Accordion toggle
+   ------------------------- */
+function toggle(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  if(el.style.display === "block"){ el.style.display = "none"; }
+  else { el.style.display = "block"; el.scrollIntoView({behavior:'smooth', block:'center'}); }
+}
+
+/* -------------------------
+   Language switch
+   ------------------------- */
+const langButtons = document.querySelectorAll('.lang button, .lang-btn, .lang button'); // fallback
+// we have .lang button in top row - select them:
+const langBtns = document.querySelectorAll('.lang button, .lang-btn');
+const allLangBtns = document.querySelectorAll('.lang button, .lang-btn');
+
+function setLangText(lang){
+  // direction
+  if(lang === 'en'){ document.documentElement.dir = 'ltr'; document.body.style.direction = 'ltr'; }
+  else { document.documentElement.dir = 'rtl'; document.body.style.direction = 'rtl'; }
+
+  // translate all elements that have data-ps/data-fa/data-en
+  document.querySelectorAll('[data-ps]').forEach(el=>{
+    const map = { ps: el.getAttribute('data-ps'), fa: el.getAttribute('data-fa'), en: el.getAttribute('data-en') };
+    if(map[lang]) el.innerText = map[lang];
+  });
+
+  // update header title/subtitle manually
+  document.getElementById('siteTitle').innerText = (lang==='en') ? "🍽 Yar Cafe | یار کافه" : (lang==='fa' ? "🍽 یار کافه" : "🍽 یار کافه");
+  document.getElementById('siteSubtitle').innerText = (lang==='en') ? "Delicious food & drinks" : (lang==='fa' ? "غذاهای خوشمزه و نوشیدنی‌های لذیذ" : "خوندور خواړه او خوږ څښاکونه");
+
+  // update QR caption (already has data attributes)
+  document.querySelectorAll('[data-ps]').forEach(el=>{
+    // already set above
+  });
+
+  // update active button visuals
+  document.querySelectorAll('.lang button, .lang-btn').forEach(b=>{
+    b.classList.toggle('active', b.getAttribute('data-lang') === lang || b.innerText.trim().toLowerCase().includes(lang));
+  });
+}
+
+/* attach event listeners to top language controls */
+document.querySelectorAll('.lang button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const langVal = btn.getAttribute('data-lang') || (btn.innerText.includes('پښتو') ? 'ps' : (btn.innerText.includes('دری') ? 'fa' : (btn.innerText.includes('English') ? 'en' : 'ps')));
+    // mark active
+    document.querySelectorAll('.lang button').forEach(x=> x.classList.remove('active'));
+    btn.classList.add('active');
+    setLangText(langVal);
+  });
+});
+
+/* also attach event listeners for .lang-btn variants (if present) */
+document.querySelectorAll('.lang-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const langVal = btn.getAttribute('data-lang') || 'ps';
+    document.querySelectorAll('.lang-btn').forEach(x=> x.classList.remove('active'));
+    btn.classList.add('active');
+    setLangText(langVal);
+  });
+});
+
+/* initialize default language Pashto */
+setLangText('ps');
+
+/* If you prefer plain URL QR (any browser), uncomment below and comment the chrome QR line above:
+document.getElementById('qrImg').src = "https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=" + QR_GENERIC;
+*/
+
+/* If user wants to click QR image to copy direct link, we can add click-to-copy:
+document.getElementById('qrImg').addEventListener('click', ()=>{ navigator.clipboard.writeText(SITE_URL); alert('Link copied: ' + SITE_URL); });
+*/
+</script>
+
+</body>
+</html>
